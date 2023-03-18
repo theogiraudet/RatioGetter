@@ -1,0 +1,19 @@
+FROM alpine/git AS git
+
+WORKDIR /usr/src/app
+RUN git clone https://github.com/theogiraudet/RatioGetter.git
+
+FROM node:16-alpine as node
+
+WORKDIR /usr/src/app
+COPY --from=git /usr/src/app/RatioGetter ./
+WORKDIR /usr/src/app/RatioGetter
+RUN npm run build
+
+FROM node:16-alpine
+
+WORKDIR /usr/src/app
+COPY -from=node /usr/src/app/RatioGetter/dist/ratio_getter.js ./
+COPY config.json ./
+
+CMD ["node" "ratio_getter.js"]
