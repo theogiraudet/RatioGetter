@@ -65,8 +65,8 @@ async function getInfos(address: string, loginPath: string, user: string, passwo
       if(upload && download) {
         return {
           date: new Date(),
-          upload: upload,
-          download: download,
+          upload: upload * Math.pow(10, 12),
+          download: download * Math.pow(10, 12),
           ratio: ratio
         }
       }
